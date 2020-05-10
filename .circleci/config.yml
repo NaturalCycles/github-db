@@ -1,0 +1,35 @@
+#
+# validate yml:
+# circleci config validate
+#
+version: 2.1
+
+#
+# Orbs
+#
+orbs:
+  tools: naturalcycles/tools@volatile
+
+#
+# Workflows
+#
+workflows:
+  version: 2
+  default-workflow:
+    jobs:
+      - tools/publish-job:
+          filters:
+            branches:
+              only: master
+      - tools/build-job
+      - tools/test-job
+
+  nightly-workflow:
+    triggers:
+      - schedule:
+          cron: '0 4 * * *' # 04:00 every day
+          filters:
+            branches:
+              only: master
+    jobs:
+      - tools/nightly-job

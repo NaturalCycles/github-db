@@ -1,0 +1,39 @@
+{
+  "name": "@naturalcycles/github-db",
+  "scripts": {},
+  "dependencies": {
+    "@naturalcycles/db-lib": "^5.1.1",
+    "@naturalcycles/js-lib": "^13.1.0",
+    "@naturalcycles/nodejs-lib": "^10.4.0",
+    "got": "^11.1.3"
+  },
+  "devDependencies": {
+    "@naturalcycles/dev-lib": "^10.14.12",
+    "@types/node": "^13.13.5",
+    "jest": "^26.0.1"
+  },
+  "files": [
+    "dist",
+    "src",
+    "!src/test",
+    "!src/**/*.test.ts",
+    "!src/**/__snapshots__",
+    "!src/**/__exclude"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NaturalCycles/github-db"
+  },
+  "engines": {
+    "node": ">=12.13.1"
+  },
+  "version": "0.0.0",
+  "description": "",
+  "author": "Natural Cycles Team",
+  "license": "MIT"
+}
