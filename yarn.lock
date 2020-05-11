@@ -664,9 +664,9 @@
     typescript "^3.8.3"
 
 "@naturalcycles/db-lib@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@naturalcycles/db-lib/-/db-lib-5.1.1.tgz#6aad6e1c60a54dcae034f2b984486aad5cd913d0"
-  integrity sha512-VlPULv56TSFLPyVGCFsEXlxfhbDrcBslyY1FTybAbGEwed4MZ2TaJ+niedgNDjTxBudZRqnI73hx71KuwdaoQg==
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@naturalcycles/db-lib/-/db-lib-5.3.1.tgz#ba5b95ee8a4b890ea1a5569a28346d21711a7941"
+  integrity sha512-5QgA6ncIzGtvzmUXtOZWP6KxNhiIbyXpoqhir/JgX9vTu1OVT9NHVc6DUUlxnDTcJIaKRo7GZHoq+XFSmlqhBA==
   dependencies:
     "@naturalcycles/js-lib" "^13.0.0"
     "@naturalcycles/nodejs-lib" "^10.0.0"
@@ -2525,9 +2525,9 @@ http-signature@~1.2.0:
     sshpk "^1.7.0"
 
 http2-wrapper@^1.0.0-beta.4.5:
-  version "1.0.0-beta.4.5"
-  resolved "https://registry.yarnpkg.com/http2-wrapper/-/http2-wrapper-1.0.0-beta.4.5.tgz#ac8e8f1cbf4aa79e3274c89e954d18697ab31e85"
-  integrity sha512-hRoAcIg26mAenbhZH4yQKpHzdbjHGM2a8JCtGJUIwFtqP82IeuMcmJwXHD6eFkILxDp0AyvaRMNrnV4aSaq9pg==
+  version "1.0.0-beta.4.6"
+  resolved "https://registry.yarnpkg.com/http2-wrapper/-/http2-wrapper-1.0.0-beta.4.6.tgz#9438f0fceb946c8cbd365076c228a4d3bd4d0143"
+  integrity sha512-9oB4BiGDTI1FmIBlOF9OJ5hwJvcBEmPCqk/hy314Uhy2uq5TjekUZM8w8SPLLlUEM+mxNhXdPAXfrJN2Zbb/GQ==
   dependencies:
     quick-lru "^5.0.0"
     resolve-alpn "^1.0.0"
