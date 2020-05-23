@@ -664,9 +664,9 @@
     typescript "^3.8.3"
 
 "@naturalcycles/db-lib@^5.1.1":
-  version "5.3.2"
-  resolved "https://registry.yarnpkg.com/@naturalcycles/db-lib/-/db-lib-5.3.2.tgz#c108fbebb785c3e9180ba70fb34880365c0606e6"
-  integrity sha512-/1q0g4ZanEo4MmfMZaKTAwzlA8SAJ5KLiBqwmZicGV+Voq104cUFRuYhudEPQZyf1dvkT3YDJgxr1QEfR6+8Eg==
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@naturalcycles/db-lib/-/db-lib-5.4.0.tgz#501b0ab770d1e935c98c9a0686dbb4f4d960a334"
+  integrity sha512-N64HZE3Vls0YR4NWSRRdWHtqh3A6OhV+gr9N8VPqFIbwE1AxM0hJ6JioU2dyhBlhllqWySYiOCplq8TB/a2PVw==
   dependencies:
     "@naturalcycles/js-lib" "^13.0.0"
     "@naturalcycles/nodejs-lib" "^10.0.0"
@@ -749,7 +749,7 @@
     through2-concurrent "^2.0.0"
     yargs "^15.3.1"
 
-"@naturalcycles/time-lib@^3.0.1":
+"@naturalcycles/time-lib@^3.0.1", "@naturalcycles/time-lib@^3.0.4":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@naturalcycles/time-lib/-/time-lib-3.0.4.tgz#fb6ebfebbee29a9bfb8d2b5a49a8f4e283dbb348"
   integrity sha512-Mbf6zdr8vVLaxtsvDVegGMW10S3apH3E+sIwS3tvSEmlR6ejrioPRU+0KsavIVYM2sspy3zzk1QaNmZ+FHOl5A==
@@ -3908,9 +3908,9 @@ ms@^2.1.1:
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
 nanoid@^3.0.0:
-  version "3.1.8"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.8.tgz#de6460f6609e8031c161a12f7dfb09bcdf7449a7"
-  integrity sha512-+kITo+bixOrnHjsPsrVa4gvWRxoSugEvCVygQ1q2NprxQcPHI+v9iID2zaGWFKBPkfuUiARIdWWIQonKdf6aQg==
+  version "3.1.9"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.9.tgz#1f148669c70bb2072dc5af0666e46edb6cd31fb2"
+  integrity sha512-fFiXlFo4Wkuei3i6w9SQI6yuzGRTGi8Z2zZKZpUxv/bQlBi4jtbVPBSNFZHQA9PNjofWqtIa8p+pnsc0kgZrhQ==
 
 nanomatch@^1.2.9:
   version "1.2.13"

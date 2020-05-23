@@ -62,3 +62,22 @@ git push --set-upstream origin gh-data
 
 - [ ] .ndjson.gzip option
 - [ ] .sqlite option
+- [ ] command to vacuum/force-push all commits in gh-data into one
+
+```
+yarn lighthouse https://www.naturalcycles.com --output-path ./tmp/site --output json --output html --only-categories=performance
+
+
+first-contentful-paint
+first-meaningful-paint
+speed-index
+estimated-input-latency
+total-blocking-time
+time-to-first-byte
+first-cpu-idle
+interactive
+network-requests
+network-rtt
+total-byte-weight
+
+```
