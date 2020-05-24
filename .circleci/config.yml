@@ -19,7 +19,7 @@ jobs:
     steps:
       - tools/setup_node
       - run: yarn lhci collect
-      - run: tsn persistLHReport.script --numberOfRuns=3
+      - run: tsn persistLHReport.script
 
 #
 # Workflows
