@@ -2,6 +2,7 @@ import { DBSaveBatchOperation, SavedDBEntity } from '@naturalcycles/db-lib'
 import { FileDBPersistencePlugin } from '@naturalcycles/db-lib/dist/adapter/file'
 import { base64ToString, getGot, Got } from '@naturalcycles/nodejs-lib'
 import type { HTTPError } from 'got'
+import PQueue from 'p-queue'
 import {
   GithubContentResponse,
   GithubItem,
@@ -34,13 +35,29 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
         Authorization: `token ${this.cfg.token}`,
       },
     })
+
+    this.q = new PQueue({ concurrency: 1 })
   }
 
   public cfg!: GithubPersistencePluginCfg
 
   public got!: Got
 
+  /**
+   * This Queue ensures there's only 1 api request to github in-flight.
+   * To avoid race-conditions and conflicts between commits.
+   * Strictly needed for Write operations (Save, Update, Delete).
+   * Currently NOT applied to Safe operations (Read).
+   */
+  public q!: PQueue
+
   async loadFile<DBM extends SavedDBEntity>(table: string): Promise<DBM[]> {
+    // Queue for Read operations is disabled currently
+    // return await this.q.add(async () => await this.loadFileTask<DBM>(table))
+    return await this.loadFileTask<DBM>(table)
+  }
+
+  async loadFileTask<DBM extends SavedDBEntity>(table: string): Promise<DBM[]> {
     const { repo, branch, repoPath } = this.cfg
     const { content } = await this.got(`repos/${repo}/contents/${repoPath}/${table}.ndjson`, {
       searchParams: {
@@ -62,6 +79,10 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
   }
 
   async saveFiles(ops: DBSaveBatchOperation[]): Promise<void> {
+    await this.q.add(async () => await this.saveFilesTask(ops))
+  }
+
+  async saveFilesTask(ops: DBSaveBatchOperation[]): Promise<void> {
     const { repo, branch, repoPath, forcePush } = this.cfg
 
     // Get branch head sha

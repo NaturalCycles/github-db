@@ -11,7 +11,6 @@ const db = new FileDB({
     repo: 'NaturalCycles/github-db',
     forcePush: true,
   }),
-  sortObjects: true,
 })
 
 test('manual1', async () => {
