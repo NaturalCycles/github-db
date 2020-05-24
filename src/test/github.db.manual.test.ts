@@ -17,8 +17,15 @@ const db = new FileDB({
 test('manual1', async () => {
   // await db.ping()
 
-  const dbms = createTestItemsDBM(10)
-  await db.saveBatch(TEST_TABLE, dbms)
+  const dbms = createTestItemsDBM(12)
+
+  // await db.saveBatch(TEST_TABLE, dbms)
+
+  await db
+    .transaction()
+    .saveBatch(TEST_TABLE, dbms)
+    .saveBatch(TEST_TABLE + '2', dbms)
+    .commit()
 
   // const r = await db.getByIds(TEST_TABLE, ['id1', 'id3'])
   // const r = await db.getTables()

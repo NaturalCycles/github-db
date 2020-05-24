@@ -1,7 +1,7 @@
-import { SavedDBEntity } from '@naturalcycles/db-lib'
+import { DBSaveBatchOperation, SavedDBEntity } from '@naturalcycles/db-lib'
 import { FileDBPersistencePlugin } from '@naturalcycles/db-lib/dist/adapter/file'
-import { base64ToString, getGot } from '@naturalcycles/nodejs-lib'
-import type { Got, HTTPError } from 'got'
+import { base64ToString, getGot, Got } from '@naturalcycles/nodejs-lib'
+import type { HTTPError } from 'got'
 import {
   GithubContentResponse,
   GithubItem,
@@ -27,7 +27,6 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
     this.got = getGot({
       // logStart: true,
       // logFinished: true,
-    }).extend({
       prefixUrl: `https://api.github.com`,
       headers: {
         // Accept: 'application/vnd.github.v3+json',
@@ -62,10 +61,8 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
       .map(row => JSON.parse(row))
   }
 
-  async saveFile<DBM extends SavedDBEntity>(table: string, dbms: DBM[]): Promise<void> {
+  async saveFiles(ops: DBSaveBatchOperation[]): Promise<void> {
     const { repo, branch, repoPath, forcePush } = this.cfg
-
-    const content = dbms.map(dbm => JSON.stringify(dbm)).join('\n') + '\n'
 
     // Get branch head sha
     const r00 = await this.got(`repos/${repo}/git/ref/heads/${branch}`).json<GithubObjectResponse>()
@@ -94,18 +91,21 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
     // log({ treeSha })
 
     // Create a tree object
+    const tree = ops.map(op => {
+      const content = op.dbms.map(dbm => JSON.stringify(dbm)).join('\n') + '\n'
+      return {
+        path: `${repoPath}/${op.table}.ndjson`,
+        mode: '100644',
+        type: 'blob',
+        content,
+      }
+    })
+
     const r4 = await this.got
       .post(`repos/${repo}/git/trees`, {
         json: {
           base_tree: treeSha,
-          tree: [
-            {
-              path: `${repoPath}/${table}.ndjson`,
-              mode: '100644',
-              type: 'blob',
-              content,
-            },
-          ],
+          tree,
         },
       })
       .json<GithubShaResponse>()
@@ -113,10 +113,14 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
     // log({ newTreeSha })
 
     // Create a commit
+    const message =
+      `feat: save ${ops.length} table(s) [skip ci]\n\n` +
+      ops.map(op => `${op.table} (${op.dbms.length})`).join('\n')
+
     const r5 = await this.got
       .post(`repos/${repo}/git/commits`, {
         json: {
-          message: `feat: save ${table}.ndjson ${dbms.length} rows [skip ci]`,
+          message,
           tree: newTreeSha,
           parents: [baseSha],
         },
