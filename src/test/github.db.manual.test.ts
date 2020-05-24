@@ -3,11 +3,11 @@ import { createTestItemsDBM, runCommonDBTest, TEST_TABLE } from '@naturalcycles/
 import { requireEnvKeys } from '@naturalcycles/nodejs-lib'
 import { GithubPersistencePlugin } from '../github.plugin'
 
-const { GITHUB_TOKEN } = requireEnvKeys('GITHUB_TOKEN')
+const { GH_TOKEN } = requireEnvKeys('GH_TOKEN')
 
 const db = new FileDB({
   plugin: new GithubPersistencePlugin({
-    token: GITHUB_TOKEN,
+    token: GH_TOKEN,
     repo: 'NaturalCycles/github-db',
     forcePush: true,
   }),

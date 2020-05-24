@@ -1,6 +1,8 @@
 {
   "name": "@naturalcycles/github-db",
-  "scripts": {},
+  "scripts": {
+    "light": "lhci collect"
+  },
   "dependencies": {
     "@naturalcycles/db-lib": "^6.0.0",
     "@naturalcycles/js-lib": "^13.1.0",
@@ -9,8 +11,11 @@
     "p-queue": "^6.4.0"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.4.0",
     "@naturalcycles/dev-lib": "^10.14.12",
+    "@naturalcycles/time-lib": "^3.0.4",
     "@types/node": "^14.0.1",
+    "fs-extra": "^9.0.0",
     "jest": "^26.0.1"
   },
   "files": [

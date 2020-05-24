@@ -10,6 +10,17 @@ version: 2.1
 orbs:
   tools: naturalcycles/tools@volatile
 
+jobs:
+  lighthouse-job:
+    docker:
+      - image: naturalcycles/ci-node-browsers
+    environment:
+      DEBUG: 'nc*'
+    steps:
+      - tools/setup_node
+      - run: yarn lhci collect
+      - run: tsn persistLHReport.script
+
 #
 # Workflows
 #
@@ -23,6 +34,7 @@ workflows:
               only: master
       - tools/build-job
       - tools/test-job
+      - lighthouse-job # testing
 
   nightly-workflow:
     triggers:
@@ -33,3 +45,4 @@ workflows:
               only: master
     jobs:
       - tools/nightly-job
+      - lighthouse-job # testing

@@ -62,3 +62,4 @@ git push --set-upstream origin gh-data
 
 - [ ] .ndjson.gzip option
 - [ ] .sqlite option
+- [ ] command to vacuum/force-push all commits in gh-data into one
