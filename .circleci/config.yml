@@ -13,7 +13,7 @@ orbs:
 jobs:
   lighthouse-job:
     docker:
-      - image: naturalcycles/ci-node-puppeteer
+      - image: naturalcycles/ci-node-browsers
     steps:
       - checkout
       - tools/setup_node
