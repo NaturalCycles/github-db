@@ -45,4 +45,13 @@ workflows:
               only: master
     jobs:
       - tools/nightly-job
-      - lighthouse-job # testing
+
+  lighthouse-workflow:
+    triggers:
+      - schedule:
+          cron: '0 * * * *' # every hour
+          filters:
+            branches:
+              only: master
+    jobs:
+      - lighthouse-job
