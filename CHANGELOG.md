@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/NaturalCycles/github-db/compare/v1.0.0...v1.1.0) (2020-05-24)
+
+
+### Features
+
+* saveFiles saves multiple files in 1 commit ([fb40ace](https://github.com/NaturalCycles/github-db/commit/fb40ace25a30d5f26401b0e4f8ae0b2bf2ca3ff1))
+
 # 1.0.0 (2020-05-11)
 
 
