@@ -1,4 +1,4 @@
-import { DBSaveBatchOperation, SavedDBEntity } from '@naturalcycles/db-lib'
+import { DBSaveBatchOperation, ObjectWithId } from '@naturalcycles/db-lib'
 import { FileDBPersistencePlugin } from '@naturalcycles/db-lib/dist/adapter/file'
 import { base64ToString, getGot, Got } from '@naturalcycles/nodejs-lib'
 import type { HTTPError } from 'got'
@@ -51,13 +51,13 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
    */
   public q!: PQueue
 
-  async loadFile<DBM extends SavedDBEntity>(table: string): Promise<DBM[]> {
+  async loadFile<DBM extends ObjectWithId>(table: string): Promise<DBM[]> {
     // Queue for Read operations is disabled currently
     // return await this.q.add(async () => await this.loadFileTask<DBM>(table))
     return await this.loadFileTask<DBM>(table)
   }
 
-  async loadFileTask<DBM extends SavedDBEntity>(table: string): Promise<DBM[]> {
+  async loadFileTask<DBM extends ObjectWithId>(table: string): Promise<DBM[]> {
     const { repo, branch, repoPath } = this.cfg
     const { content } = await this.got(`repos/${repo}/contents/${repoPath}/${table}.ndjson`, {
       searchParams: {

@@ -10,6 +10,15 @@ version: 2.1
 orbs:
   tools: naturalcycles/tools@volatile
 
+jobs:
+  lighthouse-job:
+    docker:
+      - image: naturalcycles/ci-node-puppeteer
+    steps:
+      - checkout
+      - tools/setup_node
+      - run: yarn lhci collect
+
 #
 # Workflows
 #
@@ -23,6 +32,7 @@ workflows:
               only: master
       - tools/build-job
       - tools/test-job
+      - lighthouse-job # testing
 
   nightly-workflow:
     triggers:
@@ -33,3 +43,4 @@ workflows:
               only: master
     jobs:
       - tools/nightly-job
+      - lighthouse-job # testing

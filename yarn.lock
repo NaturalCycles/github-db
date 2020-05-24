@@ -694,9 +694,9 @@
     typescript "^3.8.3"
 
 "@naturalcycles/db-lib@^6.0.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@naturalcycles/db-lib/-/db-lib-6.1.0.tgz#264db311afc20d35084ba64220dcf9eea049038c"
-  integrity sha512-2RzQ/LXPZou4q1xt98ohlkqiWaQQFHSF+HCE+rRJAoVQ4Nb+GCC1z+LMDWZm/6FRycgUlMZ1QvspHZtIsskLYw==
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@naturalcycles/db-lib/-/db-lib-6.2.1.tgz#5b09444e39b3c46401865494d16f26b8d3fe3b1e"
+  integrity sha512-ulZGIJo9QzGk+DD6A39drikKtOeF+TFC15gvJXbK+lTMWGPmS1ezQAr1lPzGM5yCy40JnsqvnL2LoMSfuLkAIA==
   dependencies:
     "@naturalcycles/js-lib" "^13.0.0"
     "@naturalcycles/nodejs-lib" "^10.0.0"
