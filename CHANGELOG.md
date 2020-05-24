@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/NaturalCycles/github-db/compare/v1.1.0...v1.2.0) (2020-05-24)
+
+
+### Features
+
+* use p-queue to control github api access concurrency ([f19374c](https://github.com/NaturalCycles/github-db/commit/f19374ca24b3a6d76ec4c34d60f18973a1362574))
+
 # [1.1.0](https://github.com/NaturalCycles/github-db/compare/v1.0.0...v1.1.0) (2020-05-24)
 
 
