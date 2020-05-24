@@ -31,11 +31,11 @@ const props = [
   'cumulative-layout-shift',
 ]
 
-const { GITHUB_TOKEN } = requireEnvKeys('GITHUB_TOKEN')
+const { GH_TOKEN } = requireEnvKeys('GH_TOKEN')
 
 const db = new FileDB({
   plugin: new GithubPersistencePlugin({
-    token: GITHUB_TOKEN,
+    token: GH_TOKEN,
     repo: 'NaturalCycles/github-db',
     forcePush: false,
   }),
@@ -72,6 +72,7 @@ runScript(async () => {
   _filterUndefinedValues(r2, true)
 
   // File is just for debugging
+  await fs.ensureDir(tmpDir)
   fs.writeJsonSync(`${tmpDir}/report.json`, r2, { spaces: 2 })
 
   ////

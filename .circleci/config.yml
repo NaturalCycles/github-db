@@ -14,10 +14,12 @@ jobs:
   lighthouse-job:
     docker:
       - image: naturalcycles/ci-node-browsers
+    environment:
+      DEBUG: 'nc*'
     steps:
-      - checkout
       - tools/setup_node
       - run: yarn lhci collect
+      - run: tsn persistLHReport.script
 
 #
 # Workflows
