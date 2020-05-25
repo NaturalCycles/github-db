@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/NaturalCycles/github-db/compare/v1.2.0...v1.2.1) (2020-05-25)
+
+
+### Bug Fixes
+
+* publish ([06a863b](https://github.com/NaturalCycles/github-db/commit/06a863ba22c9aba09c9c83c6ffab92fb994e363e))
+
 # [1.2.0](https://github.com/NaturalCycles/github-db/compare/v1.1.0...v1.2.0) (2020-05-24)
 
 
