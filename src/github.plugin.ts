@@ -1,5 +1,6 @@
 import { DBSaveBatchOperation, ObjectWithId } from '@naturalcycles/db-lib'
 import { FileDBPersistencePlugin } from '@naturalcycles/db-lib/dist/adapter/file'
+import { _filterUndefinedValues } from '@naturalcycles/js-lib'
 import { base64ToString, getGot, Got } from '@naturalcycles/nodejs-lib'
 import type { HTTPError } from 'got'
 import PQueue from 'p-queue'
@@ -15,10 +16,17 @@ import {
 // const log = Debug('nc:github-db')
 
 export class GithubPersistencePlugin implements FileDBPersistencePlugin {
-  constructor(cfg: Partial<GithubPersistencePluginCfg>) {
+  constructor(cfg: GithubPersistencePluginCfg) {
+    this.setCfg(cfg)
+
+    this.q = new PQueue({ concurrency: 1 })
+  }
+
+  setCfg(cfg: GithubPersistencePluginCfg): void {
     this.cfg = {
-      token: 'token_must_be_set',
-      repo: 'repo_must_be_set',
+      token: undefined as any, // bypass ts check
+      // token: 'token_must_be_set',
+      // repo: 'repo_must_be_set',
       branch: 'gh-data',
       repoPath: 'data',
       forcePush: false,
@@ -29,17 +37,16 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
       // logStart: true,
       // logFinished: true,
       prefixUrl: `https://api.github.com`,
-      headers: {
+      headers: _filterUndefinedValues({
         // Accept: 'application/vnd.github.v3+json',
         // 'User-Agent': 'kirillgroshkov',
-        Authorization: `token ${this.cfg.token}`,
-      },
+        // Set Authorization only if token is defined
+        Authorization: cfg.token && `token ${cfg.token}`,
+      }),
     })
-
-    this.q = new PQueue({ concurrency: 1 })
   }
 
-  public cfg!: GithubPersistencePluginCfg
+  public cfg!: Required<GithubPersistencePluginCfg>
 
   public got!: Got
 
@@ -51,13 +58,9 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
    */
   public q!: PQueue
 
-  async loadFile<DBM extends ObjectWithId>(table: string): Promise<DBM[]> {
+  async loadFile<ROW extends ObjectWithId>(table: string): Promise<ROW[]> {
     // Queue for Read operations is disabled currently
     // return await this.q.add(async () => await this.loadFileTask<DBM>(table))
-    return await this.loadFileTask<DBM>(table)
-  }
-
-  async loadFileTask<DBM extends ObjectWithId>(table: string): Promise<DBM[]> {
     const { repo, branch, repoPath } = this.cfg
     const { content } = await this.got(`repos/${repo}/contents/${repoPath}/${table}.ndjson`, {
       searchParams: {

@@ -1,5 +1,12 @@
 export interface GithubPersistencePluginCfg {
   /**
+   * Github access token.
+   * Not needed for read-only API operations on public repos.
+   * Write access is needed to write to DB.
+   */
+  token?: string
+
+  /**
    * @example `NaturalCycles/github-db`
    */
   repo: string
@@ -7,24 +14,18 @@ export interface GithubPersistencePluginCfg {
   /**
    * @default `gh-data`
    */
-  branch: string
+  branch?: string
 
   /**
    * @default `data`
    */
-  repoPath: string
+  repoPath?: string
 
   /**
    * @default false
    * If true - each Write operation will make a force-push commit, replacing the previous commit in the branch.
    */
   forcePush?: boolean
-
-  /**
-   * Github access token.
-   * Write access is needed to write to DB.
-   */
-  token: string
 }
 
 export interface GithubShaResponse {
