@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/NaturalCycles/github-db/compare/v1.2.1...v1.2.2) (2020-05-31)
+
+
+### Bug Fixes
+
+* adapt to db-lib@7 ([b5b0a4d](https://github.com/NaturalCycles/github-db/commit/b5b0a4dded722a42d6d558bd760fad667585c6d8))
+
 ## [1.2.1](https://github.com/NaturalCycles/github-db/compare/v1.2.0...v1.2.1) (2020-05-25)
 
 
