@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/NaturalCycles/github-db/compare/v1.2.2...v1.2.3) (2020-05-31)
+
+
+### Bug Fixes
+
+* allow read-only access to public repo without token! ([21442ca](https://github.com/NaturalCycles/github-db/commit/21442ca4396889fa4267dd2a6d9580e51f5d93e3))
+
 ## [1.2.2](https://github.com/NaturalCycles/github-db/compare/v1.2.1...v1.2.2) (2020-05-31)
 
 
