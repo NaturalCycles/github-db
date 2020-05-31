@@ -82,5 +82,5 @@ runScript(async () => {
     dataPoints: [[unixMillis, r2[series]]],
   }))
 
-  await tsDao.saveBatchInTransaction(ops)
+  await tsDao.commitTransaction(ops)
 })

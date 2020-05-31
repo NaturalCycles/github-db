@@ -113,7 +113,7 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
 
     // Create a tree object
     const tree = ops.map(op => {
-      const content = op.dbms.map(dbm => JSON.stringify(dbm)).join('\n') + '\n'
+      const content = op.rows.map(r => JSON.stringify(r)).join('\n') + '\n'
       return {
         path: `${repoPath}/${op.table}.ndjson`,
         mode: '100644',
@@ -136,7 +136,7 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
     // Create a commit
     const message =
       `feat: save ${ops.length} table(s) [skip ci]\n\n` +
-      ops.map(op => `${op.table} (${op.dbms.length})`).join('\n')
+      ops.map(op => `${op.table} (${op.rows.length})`).join('\n')
 
     const r5 = await this.got
       .post(`repos/${repo}/git/commits`, {

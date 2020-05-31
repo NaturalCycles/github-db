@@ -4,7 +4,7 @@
     "light": "lhci collect"
   },
   "dependencies": {
-    "@naturalcycles/db-lib": "^6.0.0",
+    "@naturalcycles/db-lib": "^7.0.0",
     "@naturalcycles/js-lib": "^13.1.0",
     "@naturalcycles/nodejs-lib": "^10.4.0",
     "got": "^11.1.3",

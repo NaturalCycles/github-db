@@ -1,3 +1,4 @@
+import { DBTransaction } from '@naturalcycles/db-lib'
 import { FileDB } from '@naturalcycles/db-lib/dist/adapter/file'
 import { createTestItemsDBM, runCommonDBTest, TEST_TABLE } from '@naturalcycles/db-lib/dist/testing'
 import { requireEnvKeys } from '@naturalcycles/nodejs-lib'
@@ -20,11 +21,9 @@ test('manual1', async () => {
 
   // await db.saveBatch(TEST_TABLE, dbms)
 
-  await db
-    .transaction()
-    .saveBatch(TEST_TABLE, dbms)
-    .saveBatch(TEST_TABLE + '2', dbms)
-    .commit()
+  const tx = new DBTransaction().saveBatch(TEST_TABLE, dbms).saveBatch(TEST_TABLE + '2', dbms)
+
+  await db.commitTransaction(tx)
 
   // const r = await db.getByIds(TEST_TABLE, ['id1', 'id3'])
   // const r = await db.getTables()
