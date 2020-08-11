@@ -6,7 +6,7 @@
   "dependencies": {
     "@naturalcycles/db-lib": "^7.0.0",
     "@naturalcycles/js-lib": "^13.1.0",
-    "@naturalcycles/nodejs-lib": "^10.4.0",
+    "@naturalcycles/nodejs-lib": "^11.1.0",
     "got": "^11.1.3",
     "p-queue": "^6.4.0"
   },
