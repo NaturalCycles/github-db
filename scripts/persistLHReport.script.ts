@@ -7,7 +7,7 @@ DEBUG=nc* yarn tsn persistLHReport.script
 import { FileDB } from '@naturalcycles/db-lib/dist/adapter/file'
 import { CommonTimeSeriesDao } from '@naturalcycles/db-lib/dist/timeseries/commonTimeSeriesDao'
 import { TimeSeriesSaveBatchOp } from '@naturalcycles/db-lib/dist/timeseries/timeSeries.model'
-import { _filterUndefinedValues } from '@naturalcycles/js-lib'
+import { _filterNullishValues } from '@naturalcycles/js-lib'
 import { requireEnvKeys } from '@naturalcycles/nodejs-lib'
 import { runScript } from '@naturalcycles/nodejs-lib/dist/script'
 import * as fs from 'fs-extra'
@@ -69,7 +69,7 @@ runScript(async () => {
     r2[`${prop}-score`] = r.audits[prop].score
   })
 
-  _filterUndefinedValues(r2, true)
+  _filterNullishValues(r2, true)
 
   // File is just for debugging
   await fs.ensureDir(tmpDir)

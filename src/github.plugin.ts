@@ -1,6 +1,6 @@
 import { DBSaveBatchOperation, ObjectWithId } from '@naturalcycles/db-lib'
 import { FileDBPersistencePlugin } from '@naturalcycles/db-lib/dist/adapter/file'
-import { _filterUndefinedValues } from '@naturalcycles/js-lib'
+import { _filterNullishValues } from '@naturalcycles/js-lib'
 import { base64ToString, getGot, Got } from '@naturalcycles/nodejs-lib'
 import type { HTTPError } from 'got'
 import PQueue from 'p-queue'
@@ -37,7 +37,7 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
       // logStart: true,
       // logFinished: true,
       prefixUrl: `https://api.github.com`,
-      headers: _filterUndefinedValues({
+      headers: _filterNullishValues({
         // Accept: 'application/vnd.github.v3+json',
         // 'User-Agent': 'kirillgroshkov',
         // Set Authorization only if token is defined

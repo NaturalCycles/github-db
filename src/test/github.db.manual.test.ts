@@ -30,6 +30,9 @@ test('manual1', async () => {
   console.log(r)
 })
 
-describe('runCommonDBTest', () => runCommonDBTest(db))
+describe('runCommonDBTest', () =>
+  runCommonDBTest(db, {
+    bufferSupport: false,
+  }))
 
 // describe('runCommonDaoTest', () => runCommonDaoTest(db))
