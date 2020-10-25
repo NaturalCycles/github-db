@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/NaturalCycles/github-db/compare/v1.2.4...v1.2.5) (2020-10-25)
+
+
+### Bug Fixes
+
+* deps ([e03b3f2](https://github.com/NaturalCycles/github-db/commit/e03b3f2de7e6c1b47c1591930b4227df06f8d6e1))
+
 ## [1.2.4](https://github.com/NaturalCycles/github-db/compare/v1.2.3...v1.2.4) (2020-08-11)
 
 
