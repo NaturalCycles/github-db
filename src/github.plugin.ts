@@ -188,7 +188,7 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
 
     return items
       .filter(f => f.type === 'file' && f.name.endsWith('.ndjson'))
-      .map(f => f.name.split('.ndjson')[0])
+      .map(f => f.name.split('.ndjson')[0]!)
   }
 
   private async ensureBranch(): Promise<void> {

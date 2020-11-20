@@ -52,7 +52,7 @@ runScript(async () => {
     return
   }
 
-  const unixMillis = parseInt(fname.split('lhr-')[1])
+  const unixMillis = parseInt(fname.split('lhr-')[1]!)
   // console.log(unixMillis)
   if (!unixMillis) {
     throw new Error(`Cannot parse unixMillis from filename: ${fname}`)
