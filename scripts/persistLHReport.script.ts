@@ -31,11 +31,11 @@ const props = [
   'cumulative-layout-shift',
 ]
 
-const { GH_TOKEN } = requireEnvKeys('GH_TOKEN')
+const { GITHUB_TOKEN } = requireEnvKeys('GITHUB_TOKEN')
 
 const db = new FileDB({
   plugin: new GithubPersistencePlugin({
-    token: GH_TOKEN,
+    token: GITHUB_TOKEN,
     repo: 'NaturalCycles/github-db',
     forcePush: false,
   }),
