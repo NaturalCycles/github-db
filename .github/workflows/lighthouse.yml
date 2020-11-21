@@ -3,6 +3,8 @@ name: lighthouse
 on:
   push:
     branches: [master, act]
+  schedule:
+    - cron: '0 * * * *' # every hour
 
 jobs:
   lighthouse-job:
