@@ -1,6 +1,7 @@
 {
   "name": "@naturalcycles/github-db",
   "scripts": {
+    "prepare": "husky install",
     "light": "lhci collect"
   },
   "dependencies": {
@@ -11,12 +12,12 @@
     "p-queue": "^6.6.2"
   },
   "devDependencies": {
-    "@lhci/cli": "^0.7.0",
-    "@naturalcycles/dev-lib": "^10.19.0",
+    "@lhci/cli": "^0.8.2",
+    "@naturalcycles/dev-lib": "^12.8.1",
     "@naturalcycles/time-lib": "^3.0.4",
-    "@types/node": "^14.14.2",
-    "fs-extra": "^9.0.0",
-    "jest": "^26.6.1"
+    "@types/node": "^16.11.1",
+    "fs-extra": "^10.0.0",
+    "jest": "^27.3.0"
   },
   "files": [
     "dist",

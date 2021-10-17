@@ -75,7 +75,7 @@ runScript(async () => {
   await fs.ensureDir(tmpDir)
   fs.writeJsonSync(`${tmpDir}/report.json`, r2, { spaces: 2 })
 
-  ////
+  /// /
 
   const ops: TimeSeriesSaveBatchOp[] = Object.keys(r2).map(series => ({
     series,
