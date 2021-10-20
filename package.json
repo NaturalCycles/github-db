@@ -38,7 +38,7 @@
   "engines": {
     "node": ">=12.13.1"
   },
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "",
   "author": "Natural Cycles Team",
   "license": "MIT"
