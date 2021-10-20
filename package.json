@@ -8,7 +8,6 @@
     "@naturalcycles/db-lib": "^8.3.0",
     "@naturalcycles/js-lib": "^14.6.0",
     "@naturalcycles/nodejs-lib": "^12.4.0",
-    "got": "^11.8.0",
     "p-queue": "^6.6.2"
   },
   "devDependencies": {
