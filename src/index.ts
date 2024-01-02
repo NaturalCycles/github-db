@@ -1,5 +1,2 @@
-import { GithubPersistencePlugin } from './github.plugin'
-import { GithubPersistencePluginCfg } from './github.plugin.model'
-
-export type { GithubPersistencePluginCfg }
-export { GithubPersistencePlugin }
+export * from './github.plugin'
+export * from './github.plugin.model'

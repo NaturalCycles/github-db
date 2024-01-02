@@ -8,9 +8,7 @@ import { FileDB } from '@naturalcycles/db-lib/dist/adapter/file'
 import { CommonTimeSeriesDao } from '@naturalcycles/db-lib/dist/timeseries/commonTimeSeriesDao'
 import { TimeSeriesSaveBatchOp } from '@naturalcycles/db-lib/dist/timeseries/timeSeries.model'
 import { _filterNullishValues } from '@naturalcycles/js-lib'
-import { requireEnvKeys } from '@naturalcycles/nodejs-lib'
-import { runScript } from '@naturalcycles/nodejs-lib/dist/script'
-import * as fs from 'fs-extra'
+import { fs2, requireEnvKeys, runScript } from '@naturalcycles/nodejs-lib'
 import { GithubPersistencePlugin } from '../src'
 import { lhciDir, tmpDir } from '../src/test/paths.cnst'
 
@@ -46,7 +44,7 @@ const tsDao = new CommonTimeSeriesDao({
 })
 
 runScript(async () => {
-  const fname = fs.readdirSync(`${lhciDir}`).find(f => f.endsWith('.json'))
+  const fname = fs2.readdirSync(`${lhciDir}`).find(f => f.endsWith('.json'))
   if (!fname) {
     console.log(`No *.json files found in ${lhciDir}`)
     return
@@ -58,10 +56,10 @@ runScript(async () => {
     throw new Error(`Cannot parse unixMillis from filename: ${fname}`)
   }
 
-  const r = fs.readJsonSync(`${lhciDir}/${fname}`)
+  const r: any = fs2.readJsonSync(`${lhciDir}/${fname}`)
   // console.log(r)
 
-  const r2 = {}
+  const r2: any = {}
 
   props.forEach(prop => {
     // console.log(prop)
@@ -72,8 +70,8 @@ runScript(async () => {
   _filterNullishValues(r2, true)
 
   // File is just for debugging
-  await fs.ensureDir(tmpDir)
-  fs.writeJsonSync(`${tmpDir}/report.json`, r2, { spaces: 2 })
+  fs2.ensureDirSync(tmpDir)
+  fs2.writeJsonSync(`${tmpDir}/report.json`, r2, { spaces: 2 })
 
   /// /
 

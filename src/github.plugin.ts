@@ -1,7 +1,13 @@
 import { DBSaveBatchOperation } from '@naturalcycles/db-lib'
 import { FileDBPersistencePlugin } from '@naturalcycles/db-lib/dist/adapter/file'
-import { _filterNullishValues, ObjectWithId } from '@naturalcycles/js-lib'
-import { base64ToString, getGot, Got, HTTPError } from '@naturalcycles/nodejs-lib'
+import {
+  _filterNullishValues,
+  Fetcher,
+  getFetcher,
+  HttpRequestError,
+  ObjectWithId,
+} from '@naturalcycles/js-lib'
+import { base64ToString } from '@naturalcycles/nodejs-lib'
 import PQueue from 'p-queue'
 import {
   GithubContentResponse,
@@ -32,10 +38,10 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
       ...cfg,
     }
 
-    this.got = getGot({
+    this.fetcher = getFetcher({
       // logStart: true,
       // logFinished: true,
-      prefixUrl: `https://api.github.com`,
+      baseUrl: `https://api.github.com`,
       headers: _filterNullishValues({
         // Accept: 'application/vnd.github.v3+json',
         // 'User-Agent': 'kirillgroshkov',
@@ -45,9 +51,9 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
     })
   }
 
-  public cfg!: Required<GithubPersistencePluginCfg>
+  cfg!: Required<GithubPersistencePluginCfg>
 
-  public got!: Got
+  fetcher!: Fetcher
 
   /**
    * This Queue ensures there's only 1 api request to github in-flight.
@@ -55,20 +61,21 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
    * Strictly needed for Write operations (Save, Update, Delete).
    * Currently NOT applied to Safe operations (Read).
    */
-  public q!: PQueue
+  q!: PQueue
 
   async loadFile<ROW extends ObjectWithId>(table: string): Promise<ROW[]> {
     // Queue for Read operations is disabled currently
     // return await this.q.add(async () => await this.loadFileTask<DBM>(table))
     const { repo, branch, repoPath } = this.cfg
-    const { content } = await this.got(`repos/${repo}/contents/${repoPath}/${table}.ndjson`, {
-      searchParams: {
-        ref: branch,
-      },
-    })
-      .json<GithubContentResponse>()
+    const { content } = await this.fetcher
+      .get<GithubContentResponse>(`repos/${repo}/contents/${repoPath}/${table}.ndjson`, {
+        searchParams: {
+          ref: branch,
+        },
+      })
       .catch(err => {
-        if ((err as HTTPError)?.response?.statusCode === 404) return {} as GithubContentResponse
+        if (err instanceof HttpRequestError && err.data.responseStatusCode === 404)
+          return {} as GithubContentResponse
         throw err
       })
 
@@ -88,19 +95,21 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
     const { repo, branch, repoPath, forcePush } = this.cfg
 
     // Get branch head sha
-    const r00 = await this.got(`repos/${repo}/git/ref/heads/${branch}`).json<GithubObjectResponse>()
+    const r00 = await this.fetcher.get<GithubObjectResponse>(
+      `repos/${repo}/git/ref/heads/${branch}`,
+    )
     const { sha: branchHeadSha } = r00.object
     // log({ branchHeadSha })
 
     let baseSha = branchHeadSha // default
 
     if (forcePush) {
-      const [, secondCommit] = await this.got(`repos/${repo}/commits`, {
+      const [, secondCommit] = await this.fetcher.get<{ sha: string }[]>(`repos/${repo}/commits`, {
         searchParams: {
           sha: branchHeadSha,
           per_page: 2,
         },
-      }).json<{ sha: string }[]>()
+      })
       if (secondCommit) {
         baseSha = secondCommit.sha
       }
@@ -109,7 +118,7 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
     // log({ baseSha })
 
     // Get branch top commit sha
-    const r2 = await this.got(`repos/${repo}/git/commits/${baseSha}`).json<GithubTreeResponse>()
+    const r2 = await this.fetcher.get<GithubTreeResponse>(`repos/${repo}/git/commits/${baseSha}`)
     const { sha: treeSha } = r2.tree
     // log({ treeSha })
 
@@ -124,14 +133,12 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
       }
     })
 
-    const r4 = await this.got
-      .post(`repos/${repo}/git/trees`, {
-        json: {
-          base_tree: treeSha,
-          tree,
-        },
-      })
-      .json<GithubShaResponse>()
+    const r4 = await this.fetcher.post<GithubShaResponse>(`repos/${repo}/git/trees`, {
+      json: {
+        base_tree: treeSha,
+        tree,
+      },
+    })
     const { sha: newTreeSha } = r4
     // log({ newTreeSha })
 
@@ -140,27 +147,26 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
       `feat: save ${ops.length} table(s) [skip ci]\n\n` +
       ops.map(op => `${op.table} (${op.rows.length})`).join('\n')
 
-    const r5 = await this.got
-      .post(`repos/${repo}/git/commits`, {
-        json: {
-          message,
-          tree: newTreeSha,
-          parents: [baseSha],
-        },
-      })
-      .json<GithubShaResponse>()
+    const r5 = await this.fetcher.post<GithubShaResponse>(`repos/${repo}/git/commits`, {
+      json: {
+        message,
+        tree: newTreeSha,
+        parents: [baseSha],
+      },
+    })
     const { sha: newCommitSha } = r5
     // log({ newCommitSha })
 
     // Move the head to the new commit
-    const r6 = await this.got
-      .patch(`repos/${repo}/git/refs/heads/${branch}`, {
+    const r6 = await this.fetcher.patch<GithubObjectResponse>(
+      `repos/${repo}/git/refs/heads/${branch}`,
+      {
         json: {
           sha: newCommitSha,
           force: forcePush,
         },
-      })
-      .json<GithubObjectResponse>()
+      },
+    )
     // console.log(r6)
     const { sha: _newObjectSha } = r6.object
     // log({ newObjectSha }) // equals newCommitSha
@@ -174,14 +180,14 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
     const { repo, branch, repoPath } = this.cfg
 
     // Max 1000 files in a directory, should be ok
-    const items = await this.got(`repos/${repo}/contents/${repoPath}`, {
-      searchParams: {
-        ref: branch,
-      },
-    })
-      .json<GithubItem[]>()
+    const items = await this.fetcher
+      .get<GithubItem[]>(`repos/${repo}/contents/${repoPath}`, {
+        searchParams: {
+          ref: branch,
+        },
+      })
       .catch(err => {
-        if ((err as HTTPError)?.response?.statusCode === 404) return []
+        if (err instanceof HttpRequestError && err.data.responseStatusCode === 404) return []
         throw err
       })
 
@@ -192,13 +198,11 @@ export class GithubPersistencePlugin implements FileDBPersistencePlugin {
 
   private async ensureBranch(): Promise<void> {
     const { repo, branch } = this.cfg
-    await this.got(`repos/${repo}/branches/${branch}`)
-      .json()
-      .catch(async err => {
-        // log(`ensureBranch(${branch}) err`, err.message)
-        // if ((err as HTTPError)?.response?.statusCode !== 404) throw err
+    await this.fetcher.get(`repos/${repo}/branches/${branch}`).catch(async err => {
+      // log(`ensureBranch(${branch}) err`, err.message)
+      // if ((err as HTTPError)?.response?.statusCode !== 404) throw err
 
-        throw err
-      })
+      throw err
+    })
   }
 }
